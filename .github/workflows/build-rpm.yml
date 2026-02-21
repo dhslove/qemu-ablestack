@@ -32,16 +32,12 @@ jobs:
           dnf makecache
           
           # 4. 의존성 설치 시도 (존재하지 않는 패키지로 인한 중단 방지를 위해 개별 설치 또는 체크)
-          # 아래 리스트는 Rocky 10 환경에 맞춰 필수/선택을 나누어 설치합니다.
           dnf install -y rpm-build rpmdevtools wget gcc make ninja-build \
             python3-pip glib2-devel pixman-devel zlib-devel libaio-devel \
             liburing-devel libcap-ng-devel libattr-devel libseccomp-devel \
             libusb1-devel nettle-devel gnutls-devel cyrus-sasl-devel libcap-devel \
-            libcurl-devel libxml2-devel systemd-devel
-                    
-          # 5. 에러가 났던 확장 패키지들 설치 (EPEL 활성화 후 시도)
-          dnf install -y spice-server-devel virglrenderer-devel swtpm-devel \
-            libcacard-devel libiscsi-devel libnfs-devel mesa-libGL-devel || echo "Some optional devel packages missing, proceeding..."
+            libcurl-devel libxml2-devel systemd-devel \
+            swtpm-devel swtpm-tools libcacard-devel mesa-libGL-devel usbredir-devel
 
       - name: Prepare RPM Build Tree
         run: |
