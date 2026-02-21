@@ -1,9 +1,10 @@
+%define debug_package %{nil}
 %define _optprefix /opt/ablestack/qemu
 
 Name:           qemu-ablestack
-Version:        %{?_version}%{!?_version:9.1.0}
-Release:        %{?_release}%{!?_release:1}%{?dist}
-Summary:        Multi-Version QEMU for ABLESTACK FT/HCI
+Version:        %{?_version}%{!?_version:9.2.4}
+Release:        %{?_release}%{!?_release:1}
+Summary:        ABLESTACK Custom QEMU (FT/High-Perf)
 
 License:        GPLv2
 URL:            https://www.qemu.org

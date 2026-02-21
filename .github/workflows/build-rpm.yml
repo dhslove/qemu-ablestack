@@ -51,8 +51,11 @@ jobs:
 
       - name: Execute RPM Build
         run: |
-          # Rocky 버전에 맞춰 릴리스 태그 생성 (예: 1.el9, 1.el10)
+          # Rocky 버전에 따라 숫자만 추출 (9 또는 10)
           MAJOR_VER=$(echo "${{ matrix.rocky_version }}" | cut -d. -f1)
+          
+          # SPEC 파일에서 %dist를 제거했으므로, 여기서 전체 Release 명칭을 완성합니다.
+          # 예: 1.el9, 1.el10
           rpmbuild -ba \
             --define "_version ${{ matrix.qemu_version }}" \
             --define "_release 1.el${MAJOR_VER}" \
