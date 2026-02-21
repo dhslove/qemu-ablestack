@@ -32,13 +32,13 @@ jobs:
           dnf makecache
           
           # 4. QEMU 빌드를 위한 모든 패키지 설치 (옵션 오프 방지)
-          dnf install -y rpm-build rpmdevtools wget gcc make ninja-build \
+          dnf install -y rpm-build rpmdevtools wget gcc make ninja-build git \
             python3-pip python3-tomli glib2-devel pixman-devel zlib-devel \
             libaio-devel liburing-devel libcap-ng-devel libattr-devel libseccomp-devel \
             libusb1-devel nettle-devel gnutls-devel cyrus-sasl-devel libcap-devel \
             libcurl-devel libxml2-devel systemd-devel \
             swtpm-devel swtpm-tools libcacard-devel mesa-libGL-devel \
-            usbredir-devel libepoxy-devel
+            usbredir-devel libepoxy-devel libfdt-devel
             
           # 5. Python 환경 추가 보강 (Rocky 9의 경우를 대비)
           pip3 install tomli

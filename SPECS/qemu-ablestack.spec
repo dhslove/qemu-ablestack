@@ -9,11 +9,11 @@ License:        GPLv2
 URL:            https://www.qemu.org
 Source0:        https://download.qemu.org/qemu-%{version}.tar.xz
 
-BuildRequires:  gcc, make, ninja-build, python3-pip, glib2-devel, pixman-devel, zlib-devel
-BuildRequires:  libaio-devel, liburing-devel, libcap-ng-devel, libattr-devel, libseccomp-devel
-BuildRequires:  usbredir-devel, libusb1-devel, nettle-devel, gnutls-devel
-BuildRequires:  mesa-libGL-devel, swtpm-devel, libcacard-devel
-BuildRequires:  python3-tomli, libepoxy-devel, cyrus-sasl-devel, libcap-devel
+BuildRequires:  gcc, make, ninja-build, python3-pip, python3-tomli
+BuildRequires:  glib2-devel, pixman-devel, zlib-devel, libfdt-devel
+BuildRequires:  libaio-devel, liburing-devel, libcap-ng-devel, libseccomp-devel
+BuildRequires:  libusb1-devel, nettle-devel, gnutls-devel, cyrus-sasl-devel
+BuildRequires:  swtpm-devel, libcacard-devel, mesa-libGL-devel, usbredir-devel, libepoxy-devel
 
 %description
 ABLESTACK Custom QEMU. Support for COLO FT, io_uring, and vhost-vdpa.
@@ -26,6 +26,7 @@ ABLESTACK Custom QEMU. Support for COLO FT, io_uring, and vhost-vdpa.
 ./configure --target-list=x86_64-softmmu \
     --prefix=%{_optprefix} \
     --interp-prefix=%{_optprefix}/gnemul/ \
+    --fdt=system \
     --enable-kvm \
     --enable-replication \
     --enable-colo-proxy \
@@ -45,12 +46,12 @@ ABLESTACK Custom QEMU. Support for COLO FT, io_uring, and vhost-vdpa.
     --enable-vnc-sasl \
     --enable-smartcard \
     --enable-guest-agent \
+    --enable-opengl \
     --disable-werror \
     --audio-drv-list= \
     --disable-debug-info \
     --disable-spice \
-    --disable-virglrenderer \
-    --enable-opengl
+    --disable-virglrenderer
 
 make %{?_smp_mflags}
 
