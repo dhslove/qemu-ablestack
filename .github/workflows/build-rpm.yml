@@ -23,7 +23,7 @@ jobs:
       - name: Install Build Dependencies
         run: |
           # 1. 기본 플러그인 및 EPEL 설치
-          dnf install -y dnf-plugins-core epel-release epel-next-release
+          dnf install -y dnf-plugins-core epel-release
           
           # 2. 리포지토리 활성화 (Rocky 10 대응)
           dnf config-manager --set-enabled crb || true
