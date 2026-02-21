@@ -15,6 +15,8 @@ BuildRequires:  glib2-devel, pixman-devel, zlib-devel, libfdt-devel
 BuildRequires:  libaio-devel, liburing-devel, libcap-ng-devel, libseccomp-devel
 BuildRequires:  libusb1-devel, nettle-devel, gnutls-devel, cyrus-sasl-devel
 BuildRequires:  swtpm-devel, libcacard-devel, mesa-libGL-devel, usbredir-devel, libepoxy-devel
+BuildRequires:  libzstd-devel, lzo-devel, snappy-devel, librbd-devel, libblkio-devel
+BuildRequires:  device-mapper-multipath-devel, numactl-devel, rdma-core-devel, libpmem-devel
 
 %description
 ABLESTACK Custom QEMU. Support for COLO FT, io_uring, and vhost-vdpa.
@@ -47,11 +49,22 @@ ABLESTACK Custom QEMU. Support for COLO FT, io_uring, and vhost-vdpa.
     --enable-smartcard \
     --enable-guest-agent \
     --enable-opengl \
+    --enable-zstd \
+    --enable-lzo \
+    --enable-snappy \
+    --enable-rbd \
+    --enable-blkio \
+    --enable-mpath \
+    --enable-numa \
+    --enable-rdma \
+    --enable-libpmem \
+    --disable-libiscsi \
+    --disable-libnfs \
+    --disable-spice \
+    --disable-virglrenderer \
     --disable-werror \
     --audio-drv-list= \
-    --disable-debug-info \
-    --disable-spice \
-    --disable-virglrenderer
+    --disable-debug-info
 
 make %{?_smp_mflags}
 
