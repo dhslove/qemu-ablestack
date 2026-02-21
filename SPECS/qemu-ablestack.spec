@@ -11,8 +11,8 @@ Source0:        https://download.qemu.org/qemu-%{version}.tar.xz
 
 BuildRequires:  gcc, make, ninja-build, python3-pip, glib2-devel, pixman-devel, zlib-devel
 BuildRequires:  libaio-devel, liburing-devel, libcap-ng-devel, libattr-devel, libseccomp-devel
-BuildRequires:  spice-server-devel, usbredir-devel, libusb1-devel, nettle-devel, gnutls-devel
-BuildRequires:  mesa-libGL-devel, virglrenderer-devel, swtpm-devel, libcacard-devel
+BuildRequires:  usbredir-devel, libusb1-devel, nettle-devel, gnutls-devel
+BuildRequires:  mesa-libGL-devel, swtpm-devel, libcacard-devel
 BuildRequires:  cyrus-sasl-devel, libcap-devel
 
 %description
