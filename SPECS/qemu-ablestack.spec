@@ -27,30 +27,30 @@ ABLESTACK Custom QEMU. Support for COLO FT, io_uring, and vhost-vdpa.
     --prefix=%{_optprefix} \
     --interp-prefix=%{_optprefix}/gnemul/ \
     --enable-kvm \
-    --enable-linux-io-uring \
     --enable-replication \
     --enable-colo-proxy \
+    --enable-linux-io-uring \
     --enable-system \
     --enable-modules \
-    --enable-virtfs \
     --enable-cap-ng \
     --enable-attr \
     --enable-seccomp \
     --enable-libusb \
     --enable-usb-redir \
-    --enable-spice \
-    --enable-libaio \
+    --enable-tpm \
     --enable-vhost-net \
     --enable-vhost-user \
     --enable-vhost-vdpa \
-    --enable-opengl \
-    --enable-virglrenderer \
-    --enable-tpm \
     --enable-vnc \
     --enable-vnc-sasl \
-    --enable-guest-agent \
     --enable-smartcard \
-    --disable-werror
+    --enable-guest-agent \
+    --disable-werror \
+    --audio-drv-list= \
+    --disable-debug-info \
+    --disable-spice \
+    --disable-virglrenderer \
+    --enable-opengl
 
 make %{?_smp_mflags}
 

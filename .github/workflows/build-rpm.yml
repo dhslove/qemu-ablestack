@@ -20,13 +20,13 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Install Build Dependencies
+      - name: Enable Devel Repositories and Install Build Dependencies
         run: |
           # 1. 기본 플러그인 및 EPEL 설치
           dnf install -y dnf-plugins-core epel-release
           
           # 2. 리포지토리 활성화 (Rocky 10 대응)
-          dnf config-manager --set-enabled crb || true
+          dnf config-manager --set-enabled crb devel || true
           
           # 3. 메타데이터 갱신
           dnf makecache
