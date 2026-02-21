@@ -13,7 +13,7 @@ BuildRequires:  gcc, make, ninja-build, python3-pip, glib2-devel, pixman-devel, 
 BuildRequires:  libaio-devel, liburing-devel, libcap-ng-devel, libattr-devel, libseccomp-devel
 BuildRequires:  usbredir-devel, libusb1-devel, nettle-devel, gnutls-devel
 BuildRequires:  mesa-libGL-devel, swtpm-devel, libcacard-devel
-BuildRequires:  cyrus-sasl-devel, libcap-devel
+BuildRequires:  python3-tomli, libepoxy-devel, cyrus-sasl-devel, libcap-devel
 
 %description
 ABLESTACK Custom QEMU. Support for COLO FT, io_uring, and vhost-vdpa.
