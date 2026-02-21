@@ -38,8 +38,7 @@ jobs:
             libusb1-devel nettle-devel gnutls-devel cyrus-sasl-devel libcap-devel \
             libcurl-devel libxml2-devel systemd-devel \
             swtpm-devel swtpm-tools libcacard-devel mesa-libGL-devel \
-            usbredir-devel libepoxy-devel \
-            libiscsi-devel libnfs-devel
+            usbredir-devel libepoxy-devel
             
           # 5. Python 환경 추가 보강 (Rocky 9의 경우를 대비)
           pip3 install tomli
