@@ -22,16 +22,26 @@ jobs:
 
       - name: Install Build Dependencies
         run: |
-          dnf install -y dnf-plugins-core
-          # Rocky 9 이상에서는 crb를 활성화
+          # 1. 기본 플러그인 및 EPEL 설치
+          dnf install -y dnf-plugins-core epel-release epel-next-release
+          
+          # 2. 리포지토리 활성화 (Rocky 10 대응)
           dnf config-manager --set-enabled crb || true
           
+          # 3. 메타데이터 갱신
+          dnf makecache
+          
+          # 4. 의존성 설치 시도 (존재하지 않는 패키지로 인한 중단 방지를 위해 개별 설치 또는 체크)
+          # 아래 리스트는 Rocky 10 환경에 맞춰 필수/선택을 나누어 설치합니다.
           dnf install -y rpm-build rpmdevtools wget gcc make ninja-build \
             python3-pip glib2-devel pixman-devel zlib-devel libaio-devel \
             liburing-devel libcap-ng-devel libattr-devel libseccomp-devel \
-            spice-server-devel usbredir-devel libusb1-devel nettle-devel gnutls-devel \
-            mesa-libGL-devel virglrenderer-devel swtpm-devel libcacard-devel \
-            cyrus-sasl-devel libcap-devel libiscsi-devel libnfs-devel libcurl-devel
+            libusb1-devel nettle-devel gnutls-devel cyrus-sasl-devel libcap-devel \
+            libcurl-devel libxml2-devel systemd-devel
+                    
+          # 5. 에러가 났던 확장 패키지들 설치 (EPEL 활성화 후 시도)
+          dnf install -y spice-server-devel virglrenderer-devel swtpm-devel \
+            libcacard-devel libiscsi-devel libnfs-devel mesa-libGL-devel || echo "Some optional devel packages missing, proceeding..."
 
       - name: Prepare RPM Build Tree
         run: |
