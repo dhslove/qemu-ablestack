@@ -1,17 +1,23 @@
-name: ABLESTACK QEMU Matrix Build (FT Enabled)
+name: ABLESTACK QEMU High-End Release Build
 
 on:
-  workflow_dispatch: # 수동 실행 시 모든 매트릭스 가동
+  workflow_dispatch:
+    inputs:
+      qemu_version:
+        description: 'QEMU Version (e.g., 9.2.4)'
+        required: true
+        default: '9.2.4'
+
+permissions:
+  contents: write # 릴리즈 생성을 위해 필수
 
 jobs:
   build-rpm:
     strategy:
-      fail-fast: false # 하나가 실패해도 나머지는 계속 빌드
       matrix:
-        # 여기에 명시한 모든 조합이 실행됩니다.
         rocky_version: ["9.6", "10.1"]
-        qemu_version: ["9.2.4", "10.2.1"] # QEMU 10.2가 아직 미출시라면 가장 근접한 상위 버전 사용 가능
-
+        qemu_version: ["${{ github.event.inputs.qemu_version }}"]
+    
     runs-on: ubuntu-latest
     container:
       image: rockylinux/rockylinux:${{ matrix.rocky_version }}
@@ -53,19 +59,26 @@ jobs:
 
       - name: Execute RPM Build
         run: |
-          # Rocky 버전에 따라 숫자만 추출 (9 또는 10)
           MAJOR_VER=$(echo "${{ matrix.rocky_version }}" | cut -d. -f1)
-          
-          # SPEC 파일에서 %dist를 제거했으므로, 여기서 전체 Release 명칭을 완성합니다.
-          # 예: 1.el9, 1.el10
           rpmbuild -ba \
             --define "_version ${{ matrix.qemu_version }}" \
             --define "_release 1.el${MAJOR_VER}" \
             SPECS/qemu-ablestack.spec
 
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v4
+      - name: Upload to Release
+        uses: softprops/action-gh-release@v2
         with:
-          # 파일 이름에 OS와 QEMU 버전을 명시하여 구분
-          name: qemu-ablestack-rocky${{ matrix.rocky_version }}-qemu${{ matrix.qemu_version }}
-          path: ~/rpmbuild/RPMS/x86_64/*.rpm
+          # 태그 이름: v9.2.4 (동일 태그일 경우 기존 릴리즈에 파일 추가)
+          tag_name: v${{ matrix.qemu_version }}
+          name: ABLESTACK QEMU Release v${{ matrix.qemu_version }}
+          body: |
+            ## ABLESTACK High-End QEMU Build
+            - **QEMU Version:** ${{ matrix.qemu_version }}
+            - **Target OS:** Rocky Linux ${{ matrix.rocky_version }}
+            - **Features:** FT(COLO), RDMA, Ceph(RBD), ZSTD, NUMA, io_uring enabled.
+          files: |
+            /github/home/rpmbuild/RPMS/x86_64/*.rpm
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
