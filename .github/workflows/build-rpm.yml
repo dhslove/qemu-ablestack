@@ -1,0 +1,56 @@
+name: ABLESTACK QEMU Matrix Build (FT Enabled)
+
+on:
+  workflow_dispatch: # 수동 실행 시 모든 매트릭스 가동
+
+jobs:
+  build-rpm:
+    strategy:
+      fail-fast: false # 하나가 실패해도 나머지는 계속 빌드
+      matrix:
+        # 여기에 명시한 모든 조합이 실행됩니다.
+        rocky_version: ["9.6", "10.1"]
+        qemu_version: ["9.2.4", "10.2.1"] # QEMU 10.2가 아직 미출시라면 가장 근접한 상위 버전 사용 가능
+
+    runs-on: ubuntu-latest
+    container:
+      image: rockylinux:${{ matrix.rocky_version }}
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Build Dependencies
+        run: |
+          dnf install -y dnf-plugins-core
+          # Rocky 9 이상에서는 crb를 활성화
+          dnf config-manager --set-enabled crb || true
+          
+          dnf install -y rpm-build rpmdevtools wget gcc make ninja-build \
+            python3-pip glib2-devel pixman-devel zlib-devel libaio-devel \
+            liburing-devel libcap-ng-devel libattr-devel libseccomp-devel \
+            spice-server-devel usbredir-devel libusb1-devel nettle-devel gnutls-devel \
+            mesa-libGL-devel virglrenderer-devel swtpm-devel libcacard-devel \
+            cyrus-sasl-devel libcap-devel libiscsi-devel libnfs-devel libcurl-devel
+
+      - name: Prepare RPM Build Tree
+        run: |
+          rpmdev-setuptree
+          # 매트릭스에 지정된 QEMU 버전을 다운로드
+          wget https://download.qemu.org/qemu-${{ matrix.qemu_version }}.tar.xz -P ~/rpmbuild/SOURCES/
+
+      - name: Execute RPM Build
+        run: |
+          # Rocky 버전에 맞춰 릴리스 태그 생성 (예: 1.el9, 1.el10)
+          MAJOR_VER=$(echo "${{ matrix.rocky_version }}" | cut -d. -f1)
+          rpmbuild -ba \
+            --define "_version ${{ matrix.qemu_version }}" \
+            --define "_release 1.el${MAJOR_VER}" \
+            SPECS/qemu-ablestack.spec
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          # 파일 이름에 OS와 QEMU 버전을 명시하여 구분
+          name: qemu-ablestack-rocky${{ matrix.rocky_version }}-qemu${{ matrix.qemu_version }}
+          path: ~/rpmbuild/RPMS/x86_64/*.rpm
