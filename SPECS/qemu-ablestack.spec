@@ -26,7 +26,6 @@ ABLESTACK Custom QEMU. Support for COLO FT, io_uring, and vhost-vdpa.
 ./configure --target-list=x86_64-softmmu \
     --prefix=%{_optprefix} \
     --interp-prefix=%{_optprefix}/gnemul/ \
-    --fdt=system \
     --enable-kvm \
     --enable-replication \
     --enable-colo-proxy \
