@@ -34,7 +34,7 @@ ABLESTACK Custom QEMU. Support for COLO FT, io_uring, and vhost-vdpa.
     --enable-colo-proxy \
     --enable-linux-io-uring \
     --enable-system \
-    --enable-modules \
+    --disable-modules \
     --enable-cap-ng \
     --enable-attr \
     --enable-seccomp \
@@ -64,7 +64,9 @@ ABLESTACK Custom QEMU. Support for COLO FT, io_uring, and vhost-vdpa.
     --disable-virglrenderer \
     --disable-werror \
     --audio-drv-list= \
-    --disable-debug-info
+    --disable-debug-info \
+    --disable-debug-tcg \
+    --extra-cflags="-O2 -fno-strict-aliasing"
 
 make %{?_smp_mflags}
 
